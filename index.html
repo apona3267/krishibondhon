@@ -9,6 +9,17 @@
     content="রংপুর জেলার ৮টি উপজেলার কৃষক ও ক্রেতার মধ্যে সরাসরি আলু ও মৌসুমি সবজি ক্রয়-বিক্রয়ের ডিজিটাল সেতুবন্ধন। ০% কমিশন।"
   />
 
+  <!-- PWA & Android / iOS App Configuration -->
+  <meta name="theme-color" content="#14532D" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="কৃষিবন্ধন" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png" />
+  <link rel="apple-touch-icon" href="./icon-192.png" />
+
   <!-- Google Fonts: Hind Siliguri -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -2037,6 +2048,7 @@
             <li><button type="button" data-nav="farmer-dashboard" class="hover:text-amber-300 cursor-pointer">কৃষক ড্যাশবোর্ড</button></li>
             <li><button type="button" data-nav="buyer-dashboard" class="hover:text-amber-300 cursor-pointer">ক্রেতা ড্যাশবোর্ড</button></li>
             <li><button type="button" data-nav="about" class="hover:text-amber-300 cursor-pointer">আমাদের সম্পর্কে ও FAQ</button></li>
+            <li><a href="./privacy-policy.html" class="hover:text-amber-300 transition">প্রাইভেসি পলিসি ও তথ্য সুরক্ষা</a></li>
           </ul>
         </div>
         <div>
@@ -10351,5 +10363,87 @@
       renderAll();
     }
   </script>
+
+  <!-- PWA Install App Floating Banner (Auto-shown only when browser supports install & not already in standalone app) -->
+  <div id="pwa-install-bar" class="hidden fixed bottom-20 xl:bottom-6 left-4 right-4 sm:left-auto sm:right-6 z-[85] max-w-sm rounded-2xl bg-[#14532D] text-white p-3.5 shadow-2xl border border-emerald-400/35 flex items-center justify-between gap-3">
+    <div class="flex items-center gap-2.5 min-w-0">
+      <img src="./icon-192.png" alt="কৃষিবন্ধন" class="h-10 w-10 rounded-xl shrink-0 border border-amber-400/40" />
+      <div class="min-w-0 leading-tight">
+        <p class="text-xs sm:text-sm font-bold truncate">কৃষিবন্ধন অ্যাপ ইনস্টল করুন</p>
+        <p class="text-[11px] text-emerald-200 truncate">দ্রুত ব্রাউজিং • মাত্র ১ ক্লিকে হোম স্ক্রিনে</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-1.5 shrink-0">
+      <button type="button" id="pwa-install-btn" class="rounded-xl bg-[#F59E0B] px-3 py-1.5 text-xs font-extrabold text-[#14532D] hover:bg-amber-400 cursor-pointer">ইনস্টল</button>
+      <button type="button" id="pwa-install-dismiss" class="rounded-lg p-1 text-emerald-200 hover:bg-emerald-800 cursor-pointer" aria-label="বন্ধ করুন">✕</button>
+    </div>
+  </div>
+
+  <!-- PWA Service Worker & App Shortcut Handler -->
+  <script>
+    (function () {
+      // 1. Register Service Worker on http/https origins
+      if ("serviceWorker" in navigator && (window.location.protocol === "https:" || window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")) {
+        window.addEventListener("load", function () {
+          navigator.serviceWorker.register("./sw.js", { scope: "./" }).catch(function (err) {
+            console.warn("SW registration skipped:", err);
+          });
+        });
+      }
+
+      // 2. Handle Android App Shortcut deep links (?view=marketplace / transport / farmer-dashboard)
+      window.addEventListener("load", function () {
+        try {
+          var params = new URLSearchParams(window.location.search);
+          var targetView = params.get("view");
+          if (targetView) {
+            var btn = document.querySelector('[data-nav="' + targetView + '"]');
+            if (btn) btn.click();
+          }
+        } catch (e) {}
+      });
+
+      // 3. Native Install App Prompt (Hidden automatically when running inside installed APK/TWA)
+      var deferredPrompt = null;
+      var bar = document.getElementById("pwa-install-bar");
+      var installBtn = document.getElementById("pwa-install-btn");
+      var dismissBtn = document.getElementById("pwa-install-dismiss");
+      var isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+
+      window.addEventListener("beforeinstallprompt", function (e) {
+        if (isStandalone) return;
+        try {
+          if (window.sessionStorage.getItem("kd_pwa_dismissed") === "1") return;
+        } catch (err) {}
+        e.preventDefault();
+        deferredPrompt = e;
+        if (bar) bar.classList.remove("hidden");
+      });
+
+      if (installBtn) {
+        installBtn.addEventListener("click", function () {
+          if (!deferredPrompt) return;
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.finally(function () {
+            deferredPrompt = null;
+            if (bar) bar.classList.add("hidden");
+          });
+        });
+      }
+
+      if (dismissBtn) {
+        dismissBtn.addEventListener("click", function () {
+          if (bar) bar.classList.add("hidden");
+          try { window.sessionStorage.setItem("kd_pwa_dismissed", "1"); } catch (err) {}
+        });
+      }
+
+      window.addEventListener("appinstalled", function () {
+        if (bar) bar.classList.add("hidden");
+        deferredPrompt = null;
+      });
+    })();
+  </script>
+
 </body>
 </html>

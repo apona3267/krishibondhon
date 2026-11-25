@@ -1,0 +1,85 @@
+{
+  "id": "/krishibondhon/",
+  "name": "কৃষিবন্ধন — KRISHIBONDHON",
+  "short_name": "কৃষিবন্ধন",
+  "description": "মধ্যস্বত্বভোগী ছাড়াই সরাসরি কৃষকের ক্ষেত থেকে ক্রেতার হাতে তাজা ফসল, স্থানীয় পরিবহন ও কৃষক সহায়ক সেবা। ০% কমিশন।",
+  "start_url": "/krishibondhon/",
+  "scope": "/krishibondhon/",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "orientation": "portrait-primary",
+  "background_color": "#14532D",
+  "theme_color": "#14532D",
+  "lang": "bn",
+  "dir": "ltr",
+  "categories": [
+    "shopping",
+    "business",
+    "lifestyle"
+  ],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "মার্কেটপ্লেস",
+      "short_name": "মার্কেট",
+      "description": "সরাসরি কৃষকের তাজা ফসল দেখুন",
+      "url": "/krishibondhon/?view=marketplace",
+      "icons": [
+        {
+          "src": "./icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "পরিবহন সেবা",
+      "short_name": "পরিবহন",
+      "description": "স্থানীয় পিকআপ, ট্রাক ও পরিবহন চাহিদা",
+      "url": "/krishibondhon/?view=transport",
+      "icons": [
+        {
+          "src": "./icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "কৃষক ড্যাশবোর্ড",
+      "short_name": "কৃষক",
+      "description": "নতুন ফসল প্রকাশ ও পরিচালনা করুন",
+      "url": "/krishibondhon/?view=farmer-dashboard",
+      "icons": [
+        {
+          "src": "./icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "io.github.apona3267.twa",
+        "sha256_cert_fingerprints": ["1E:7F:C5:50:B3:90:F2:9C:EA:94:76:20:BE:71:9B:6E:53:2D:99:F7:B1:68:9E:14:DF:C5:97:1D:3B:06:5B:DD"]
+      }
+    }]
